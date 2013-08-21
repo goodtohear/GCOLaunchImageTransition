@@ -81,7 +81,7 @@ NSString* const GCOLaunchImageTransitionHideNotification = @"GCOLaunchImageTrans
       self.style = style;
       
       // Assign launch image
-      self.imageView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+      self.imageView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
       self.imageView.image = [self launchImageForOrientation:[UIApplication sharedApplication].statusBarOrientation];
 
       // Register for receiving notifications
@@ -199,6 +199,8 @@ NSString* const GCOLaunchImageTransitionHideNotification = @"GCOLaunchImageTrans
          else
          {
             launchImage = [UIImage imageNamed:@"Default-Landscape.png"];
+            // Hack to get the launch image to be the correct orientation in landscape orientation
+            launchImage = [[UIImage alloc] initWithCGImage:launchImage.CGImage scale:1.0 orientation: orientation == UIInterfaceOrientationLandscapeLeft ? UIImageOrientationLeft : UIImageOrientationRight ];
          }
       }
       
